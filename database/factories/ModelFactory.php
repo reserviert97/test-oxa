@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -16,5 +18,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'name'     => $faker->name,
         'email'    => $faker->unique()->email,
         'password' => password_hash('123456', PASSWORD_BCRYPT),
+        'created_at' => Carbon::now(),
+        'updated_at' => Carbon::now()
     ];
 });
