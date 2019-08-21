@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Level;
 use Illuminate\Http\Request;
+use Laravel\Lumen\Routing\Controller;
 
 class LevelController extends Controller
 {
