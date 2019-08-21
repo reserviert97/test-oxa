@@ -21,7 +21,7 @@ class BadgeController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($this->request, [
+        $this->validate($request, [
             'name' => 'required|min:3',
             'description'     => 'required|min:5',
             'minimum_level'  => 'required|numeric',
