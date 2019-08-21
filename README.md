@@ -6,7 +6,7 @@
   <h3 align="center">Simple Level and Badge System REST API</h3>
 
   <p align="center">
-    <a href="https://oxalevelbadge.herokuapp.com/api/">Check out Deployed App </a> |
+    <a href="https://oxalevelbadge.herokuapp.com/api/">Check out Deployed App </a> ||
     <a href="https://github.com/reserviert97/test-oxa/tree/master/screenshoot">View Screenshots </a>
   </p>
 </p>
@@ -19,7 +19,6 @@ Features:
 * Read
 * Update
 * Delete
-
 * Register
 * Login
 
@@ -28,7 +27,34 @@ Features:
 
 
 <!-- GETTING STARTED -->
+## Requirements
+* PHP => 7.1x
+* Postman => [Download](https://www.getpostman.com/downloads/)
+* MYSQL / PostgreSQL Database
+
 ## Getting Started
+* Clone this Repo
+```bash
+git clone https://github.com/reserviert97/test-oxa
+```
+* generate .env files
+```bash
+cp .env.example .env
+```
+* edit necessary configuration 
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE= your database
+DB_USERNAME= your database username
+DB_PASSWORD= your database password
+```
+* start the server
+
+```bash
+php -S localhost:8000 -t public
+```
 
 ### Register
 
