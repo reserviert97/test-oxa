@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use PDOException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -49,11 +50,16 @@ class Handler extends ExceptionHandler
     {
         DB::rollback();
 
-        if ($exception instanceof ModelNotFoundException || $exception instanceof NotFoundHttpException)
-        {
+        if ( $exception instanceof ModelNotFoundException || $exception instanceof NotFoundHttpException ) {
             return response()->json([
-                'message' => 'sorry, not found' 
+                'message' => 'sorry, not found'
             ], 404);
+        }
+
+        if ($exception instanceof PDOException || $exception instanceof QueryException) {
+            return response()->json([
+                'message' => 'sorry, server error'
+            ], 500);
         }
 
         return parent::render($request, $exception);
