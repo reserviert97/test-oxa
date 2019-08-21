@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\UserDetail;
 use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -94,12 +95,23 @@ class AuthController extends BaseController
         $user->name = $this->request->input('name');
         $user->email = $this->request->input('email');
         $user->password = Hash::make($this->request->input('password'));
-        $user->save();  
+        $user->save(); 
+
+        $user_detail = new UserDetail();
+        $user_detail->user_id = $user->id;
+        $user_detail->total_generated = 0;
+        $user_detail->level_id = 1;
+        $user_detail->badge_id = 1;
+        
+        $user->detail()->save($user_detail);
 
         return response()->json([
             'status' => 201,
             'message' => 'User has been created',
-            'created_user' => $user
+            'created_user' => [
+                'user' => $user,
+                'user_detail' => $user->detail
+            ]
         ]);
         
     }

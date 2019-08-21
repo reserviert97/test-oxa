@@ -44,4 +44,8 @@ $router->group([
     $router->put('/levels/{levelId}', 'LevelController@update');
     $router->delete('/levels/{levelId}', 'LevelController@delete');
 
+    $router->get('/users', 'UserController@index');
+    $router->get('/users/{userId}', 'UserController@show');
+    $router->put('/users/{userId}', 'UserController@update');
+    $router->delete('/users/{userId}', 'UserController@destroy');
 });
