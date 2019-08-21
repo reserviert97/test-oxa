@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Validator;
 use App\User;
 use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
-use Firebase\JWT\ExpiredException;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
@@ -67,18 +65,42 @@ class AuthController extends BaseController
             // differents kind of responses. But let's return the 
             // below respose for now.
             return response()->json([
+                'message' => 'Login Failed',
                 'error' => 'Email does not exist.'
-            ], 400);
+            ], 401);
         }
         // Verify the password and generate the token
         if (Hash::check($this->request->input('password'), $user->password)) {
             return response()->json([
+                'message' => 'Login Success',
                 'token' => $this->jwt($user)
             ], 200);
         }
         // Bad Request response
         return response()->json([
             'error' => 'Email or password is wrong.'
-        ], 400);
+        ], 401);
+    }
+
+    public function register(){
+
+        $this->validate($this->request, [
+            'name' => 'required|min:5',
+            'email'     => 'required|email|unique:users',
+            'password'  => 'required|min:5',
+        ]);
+
+        $user = new User();
+        $user->name = $this->request->input('name');
+        $user->email = $this->request->input('email');
+        $user->password = Hash::make($this->request->input('password'));
+        $user->save();  
+
+        return response()->json([
+            'status' => 201,
+            'message' => 'User has been created',
+            'created_user' => $user
+        ]);
+        
     }
 }
