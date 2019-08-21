@@ -50,6 +50,13 @@ DB_DATABASE= your database
 DB_USERNAME= your database username
 DB_PASSWORD= your database password
 ```
+
+* run migration
+
+```bash
+php artisan migrate:fresh --seed
+```
+
 * start the server
 
 ```bash
