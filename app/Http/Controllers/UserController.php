@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Badge;
+use App\Level;
 use App\User;
-use App\UserDetail;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -53,6 +54,55 @@ class UserController extends Controller
             'message' => 'data has been deleted successfully',
             'deleted_user' => $user
         ], 201);
+    }
+
+    public function generate(Request $request)
+    {
+        /* cek total generate user */
+        $total_generate = $request->auth->detail->total_generated;
+
+        /* cek level user */
+        $user_level = $request->auth->detail->level;
+
+        /* cek badge user */
+        $user_badge = $request->auth->detail->badge;
+
+        $total_generate += 1;
+
+        /* get all level */
+        $levels = Level::all();
+
+        /* change user level by total_generated */
+        foreach ($levels as $level) {
+            if ($total_generate >= $level['minimum_generated']) {
+                $user_level = $level;
+            }
+        }
+
+        /* get all badge */
+        $badges = Badge::all();
+
+        /* change user badge by user_level */
+        foreach ($badges as $badge) {
+            if ($user_level['level'] >= $badge['minimum_level']) {
+                $user_badge = $badge;
+            }
+        }
+
+        /* saving to database */
+        $user = User::findOrFail($request->auth->id);
+        $user->detail->total_generated = $total_generate;
+        $user->detail->level_id = $user_level['id'];
+        $user->detail->badge_id = $user_badge['id'];
+        $user->detail->save();
+        $user->detail->level;
+        $user->detail->badge;
+
+        return response()->json([
+            'status' => 'user data successfully updated',
+            'updated_data' => $request->auth
+        ], 201);
+      
     }
 
 }

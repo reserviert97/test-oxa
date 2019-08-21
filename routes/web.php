@@ -11,10 +11,6 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
-});
-
 $router->group([ 'prefix' => 'auth' ], function () use ($router) {
     $router->post('/login', 'AuthController@authenticate');
 
@@ -27,10 +23,6 @@ $router->group([
     'middleware' => 'jwt.auth',
     'prefix' => 'api'
 ], function () use ($router) {
-    $router->get('users', function () {
-        $users = \App\User::all();
-        return response()->json($users);
-    });
 
     $router->get('/badges', 'BadgeController@index');
     $router->post('/badges', 'BadgeController@store');
@@ -48,4 +40,8 @@ $router->group([
     $router->get('/users/{userId}', 'UserController@show');
     $router->put('/users/{userId}', 'UserController@update');
     $router->delete('/users/{userId}', 'UserController@destroy');
+
+    $router->group(['middleware' => 'db.transaction'], function() use ($router) {
+        $router->put('/generate', 'UserController@generate');
+    });
 });
